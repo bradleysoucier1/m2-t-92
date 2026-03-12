@@ -121,24 +121,199 @@
 
     /* ── Divider ── */
     hr.divider { border: none; border-top: 1px solid #e0e0e0; margin: 40px 0 0; }
+
+    /* ── Drawer layout shell ── */
+    .drawer-frame {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* MDC modal drawer sits outside flow; app-content scrolls */
+    .mdc-drawer-app-content {
+      flex: 1;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Drawer header branding */
+    .mdc-drawer__header {
+      background: #6200ee;
+      padding: 16px;
+    }
+    .mdc-drawer__title {
+      color: #fff !important;
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0 0 4px;
+    }
+    .mdc-drawer__subtitle {
+      color: rgba(255,255,255,.7) !important;
+      font-size: 12px;
+      margin: 0;
+    }
+
+    /* Active nav item highlight */
+    .mdc-list-item--activated {
+      color: #6200ee !important;
+    }
+    .mdc-list-item--activated .mdc-list-item__graphic {
+      color: #6200ee !important;
+    }
+
+    /* Drawer nav subheader */
+    .mdc-list-group__subheader {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #9e9e9e;
+      margin: 16px 16px 4px;
+    }
+
+    /* Keep page-body padding sensible */
+    .page-body { padding-top: 80px; }
   </style>
 
 </head>
 <body>
 
 <!-- ══════════════════════════════════
+     NAVIGATION DRAWER (modal)
+════════════════════════════════════ -->
+
+<aside class="mdc-drawer mdc-drawer--modal" id="nav-drawer">
+  <div class="mdc-drawer__header">
+    <h3 class="mdc-drawer__title">MDC-Web</h3>
+    <h6 class="mdc-drawer__subtitle">M2 Kitchen Sink v14</h6>
+  </div>
+  <div class="mdc-drawer__content">
+    <div class="mdc-list-group">
+      <p class="mdc-list-group__subheader">Actions</p>
+      <nav class="mdc-list" id="drawer-nav">
+        <a class="mdc-list-item mdc-list-item--activated" href="#sec-buttons" data-section="sec-buttons" aria-current="page">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">touch_app</i>
+          <span class="mdc-list-item__text">Buttons</span>
+        </a>
+        <a class="mdc-list-item" href="#sec-fabs" data-section="sec-fabs">
+          <span class="mdc-list-item__ripple"></span>
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">add_circle_outline</i>
+          <span class="mdc-list-item__text">FABs</span>
+        </a>
+      </nav>
+
+```
+  <hr class="mdc-list-divider" />
+  <p class="mdc-list-group__subheader">Surfaces</p>
+  <nav class="mdc-list">
+    <a class="mdc-list-item" href="#sec-cards" data-section="sec-cards">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">crop_landscape</i>
+      <span class="mdc-list-item__text">Cards</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-elevation" data-section="sec-elevation">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">layers</i>
+      <span class="mdc-list-item__text">Elevation</span>
+    </a>
+  </nav>
+
+  <hr class="mdc-list-divider" />
+  <p class="mdc-list-group__subheader">Inputs</p>
+  <nav class="mdc-list">
+    <a class="mdc-list-item" href="#sec-textfields" data-section="sec-textfields">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">text_fields</i>
+      <span class="mdc-list-item__text">Text Fields</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-select" data-section="sec-select">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">arrow_drop_down_circle</i>
+      <span class="mdc-list-item__text">Select</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-controls" data-section="sec-controls">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">toggle_on</i>
+      <span class="mdc-list-item__text">Selection Controls</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-slider" data-section="sec-slider">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">tune</i>
+      <span class="mdc-list-item__text">Slider</span>
+    </a>
+  </nav>
+
+  <hr class="mdc-list-divider" />
+  <p class="mdc-list-group__subheader">Navigation</p>
+  <nav class="mdc-list">
+    <a class="mdc-list-item" href="#sec-tabs" data-section="sec-tabs">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">tab</i>
+      <span class="mdc-list-item__text">Tabs</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-chips" data-section="sec-chips">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">label</i>
+      <span class="mdc-list-item__text">Chips</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-list" data-section="sec-list">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">list</i>
+      <span class="mdc-list-item__text">Lists</span>
+    </a>
+  </nav>
+
+  <hr class="mdc-list-divider" />
+  <p class="mdc-list-group__subheader">Feedback</p>
+  <nav class="mdc-list">
+    <a class="mdc-list-item" href="#sec-progress" data-section="sec-progress">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">hourglass_empty</i>
+      <span class="mdc-list-item__text">Progress</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-datatable" data-section="sec-datatable">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">table_chart</i>
+      <span class="mdc-list-item__text">Data Table</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-snackbar" data-section="sec-snackbar">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">notifications</i>
+      <span class="mdc-list-item__text">Snackbars</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-dialog" data-section="sec-dialog">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">open_in_new</i>
+      <span class="mdc-list-item__text">Dialog</span>
+    </a>
+    <a class="mdc-list-item" href="#sec-tooltip" data-section="sec-tooltip">
+      <span class="mdc-list-item__ripple"></span>
+      <i class="material-icons mdc-list-item__graphic" aria-hidden="true">info_outline</i>
+      <span class="mdc-list-item__text">Tooltip</span>
+    </a>
+  </nav>
+</div>
+```
+
+  </div>
+</aside>
+<div class="mdc-drawer-scrim" id="drawer-scrim"></div>
+
+<!-- ══════════════════════════════════
      TOP APP BAR
 ════════════════════════════════════ -->
 
+<div class="mdc-drawer-app-content">
 <header class="mdc-top-app-bar mdc-top-app-bar--fixed" id="app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Menu">menu</button>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu" id="menu-btn">menu</button>
       <span class="mdc-top-app-bar__title">Material 2 — Kitchen Sink</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search">search</button>
-      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="More">more_vert</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search" id="action-search">search</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="More options" id="action-more">more_vert</button>
     </section>
   </div>
 </header>
@@ -147,7 +322,7 @@
 
   <!-- ══ BUTTONS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-buttons">
     <p class="section-title">Buttons</p>
     <div class="row">
       <button class="mdc-button mdc-button--raised" data-mdc-auto-init="MDCRipple">
@@ -182,7 +357,7 @@
 
   <!-- ══ ICON BUTTONS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-iconbtns">
     <p class="section-title">Icon Buttons</p>
     <div class="row">
       <button class="mdc-icon-button material-icons" aria-label="Favorite" id="icon-btn-1">favorite_border</button>
@@ -194,7 +369,7 @@
 
   <!-- ══ FAB ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-fabs">
     <p class="section-title">Floating Action Buttons</p>
     <div class="fab-zone">
       <button class="mdc-fab" aria-label="Add" data-mdc-auto-init="MDCRipple">
@@ -215,7 +390,7 @@
 
   <!-- ══ CARDS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-cards">
     <p class="section-title">Cards</p>
     <div class="row" style="align-items:flex-start">
       <!-- Elevated card -->
@@ -249,7 +424,7 @@
 
   <!-- ══ TEXT FIELDS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-textfields">
     <p class="section-title">Text Fields</p>
     <div class="row" style="align-items:flex-end; flex-wrap:wrap; gap:24px;">
       <!-- Filled -->
@@ -290,7 +465,7 @@
 
   <!-- ══ SELECT ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-select">
     <p class="section-title">Select</p>
     <div class="row">
       <!-- Filled select -->
@@ -352,7 +527,7 @@
 
   <!-- ══ CHECKBOXES, RADIOS, SWITCHES ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-controls">
     <p class="section-title">Selection Controls</p>
     <div class="row" style="gap:32px; align-items:flex-start; flex-wrap:wrap;">
       <!-- Checkboxes -->
@@ -405,7 +580,7 @@
 
   <!-- ══ CHIPS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-chips">
     <p class="section-title">Chips</p>
     <div class="mdc-chip-set" id="chip-set-filter" role="grid">
       <div class="mdc-chip mdc-chip--selected" role="row" id="chip-0"><div class="mdc-chip__ripple"></div><span class="mdc-chip__checkmark"><svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30"><path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/></svg></span><span role="gridcell"><span role="checkbox" class="mdc-chip__primary-action" tabindex="0" aria-checked="true"><span class="mdc-chip__text">Design</span></span></span></div>
@@ -417,7 +592,7 @@
 
   <!-- ══ TABS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-tabs">
     <p class="section-title">Tabs</p>
     <div class="mdc-tab-bar" role="tablist" id="tab-bar-1">
       <div class="mdc-tab-scroller">
@@ -446,7 +621,7 @@
 
   <!-- ══ LISTS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-list">
     <p class="section-title">Lists</p>
     <div class="list-wrapper">
       <ul class="mdc-list mdc-list--two-line" id="list-demo">
@@ -480,7 +655,7 @@
 
   <!-- ══ PROGRESS ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-progress">
     <p class="section-title">Progress Indicators</p>
     <div class="row" style="gap:32px; align-items:center; flex-wrap:wrap;">
       <!-- Linear -->
@@ -519,7 +694,7 @@
 
   <!-- ══ SLIDER ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-slider">
     <p class="section-title">Slider</p>
     <div class="slider-wrap">
       <div class="mdc-slider" id="slider-continuous">
@@ -569,7 +744,7 @@
 
   <!-- ══ DATA TABLE ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-datatable">
     <p class="section-title">Data Table</p>
     <div class="mdc-data-table" id="data-table">
       <div class="mdc-data-table__table-container">
@@ -621,7 +796,7 @@
 
   <!-- ══ SNACKBAR ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-snackbar">
     <p class="section-title">Snackbars</p>
     <div class="snackbar-demo">
       <button class="mdc-button mdc-button--raised" id="snack-basic-btn" data-mdc-auto-init="MDCRipple">
@@ -637,7 +812,7 @@
 
   <!-- ══ DIALOG ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-dialog">
     <p class="section-title">Dialog</p>
     <button class="mdc-button mdc-button--raised" id="open-dialog" data-mdc-auto-init="MDCRipple">
       <span class="mdc-button__ripple"></span>
@@ -647,7 +822,7 @@
 
   <!-- ══ TOOLTIP ══ -->
 
-  <section class="section">
+  <section class="section" id="sec-tooltip">
     <p class="section-title">Tooltips</p>
     <div class="row">
       <button class="mdc-icon-button material-icons" aria-describedby="tooltip-add" data-tooltip-id="tooltip-add" id="btn-tooltip">add_circle</button>
@@ -659,7 +834,7 @@
 
   <!-- Elevation showcase -->
 
-  <section class="section">
+  <section class="section" id="sec-elevation">
     <p class="section-title">Elevation</p>
     <div class="row" style="flex-wrap:wrap; gap:16px;">
       <div class="mdc-elevation--z1" style="width:80px;height:80px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#757575;">dp1</div>
@@ -675,6 +850,7 @@
   <p style="text-align:center;font-size:12px;color:#bdbdbd;margin:24px 0 0;padding-bottom:24px;">Material Components for the Web (MDC-Web) v14 — M2 Kitchen Sink</p>
 
 </main>
+</div><!-- /.mdc-drawer-app-content -->
 
 <!-- ══ SNACKBARS (DOM) ══ -->
 
@@ -727,11 +903,58 @@
 <script src="https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.js"></script>
 
 <script>
-  // ── Auto-init everything MDC can find ──
-  mdc.autoInit();
+  // ── Navigation Drawer ──
+  const drawer = new mdc.drawer.MDCDrawer(document.getElementById('nav-drawer'));
 
   // ── Top App Bar ──
   const topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+
+  // Hamburger toggles drawer open/closed
+  document.getElementById('menu-btn').addEventListener('click', () => {
+    drawer.open = !drawer.open;
+  });
+
+  // Scrim click closes drawer (MDC modal drawer handles this, but belt-and-suspenders)
+  document.getElementById('drawer-scrim').addEventListener('click', () => {
+    drawer.open = false;
+  });
+
+  // Nav item clicks: close drawer + scroll to section + set active state
+  document.querySelectorAll('#nav-drawer .mdc-list-item[data-section]').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      // update active state
+      document.querySelectorAll('#nav-drawer .mdc-list-item').forEach(el =>
+        el.classList.remove('mdc-list-item--activated')
+      );
+      item.classList.add('mdc-list-item--activated');
+      // close drawer
+      drawer.open = false;
+      // scroll to section (after drawer animation settles)
+      const target = document.getElementById(item.dataset.section);
+      if (target) {
+        setTimeout(() => {
+          const appContent = document.querySelector('.mdc-drawer-app-content');
+          const offset = target.getBoundingClientRect().top + appContent.scrollTop - 72;
+          appContent.scrollTo({ top: offset, behavior: 'smooth' });
+        }, 250);
+      }
+    });
+  });
+
+  // Highlight active section on scroll (IntersectionObserver)
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('#nav-drawer .mdc-list-item[data-section]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(el => el.classList.remove('mdc-list-item--activated'));
+        const active = document.querySelector(`#nav-drawer [data-section="${entry.target.id}"]`);
+        if (active) active.classList.add('mdc-list-item--activated');
+      }
+    });
+  }, { root: document.querySelector('.mdc-drawer-app-content'), rootMargin: '-64px 0px -60% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
 
   // ── Text Fields ──
   ['tf-filled','tf-outlined','tf-icon','tf-disabled'].forEach(id => {
@@ -744,11 +967,7 @@
   });
 
   // ── Checkboxes ──
-  ['cb1','cb2','cb3'].forEach(id => {
-    try { new mdc.checkbox.MDCCheckbox(document.getElementById(id)); } catch(e){}
-  });
-  // row checkboxes
-  ['th-cb','row-cb-0','row-cb-1','row-cb-2'].forEach(id => {
+  ['cb1','cb2','cb3','th-cb','row-cb-0','row-cb-1','row-cb-2'].forEach(id => {
     try { new mdc.checkbox.MDCCheckbox(document.getElementById(id)); } catch(e){}
   });
 
@@ -770,8 +989,7 @@
 
   // ── Linear Progress ──
   const lp1 = new mdc.linearProgress.MDCLinearProgress(document.getElementById('linear-progress'));
-  lp1.progress = 0.7;
-  lp1.open();
+  lp1.progress = 0.7; lp1.open();
   const lp2 = new mdc.linearProgress.MDCLinearProgress(document.getElementById('linear-progress-2'));
   lp2.open();
 
@@ -802,8 +1020,8 @@
   // ── Tooltip ──
   try { new mdc.tooltip.MDCTooltip(document.getElementById('tooltip-add')); } catch(e){}
 
-  // ── Icon Buttons (ripple) ──
-  document.querySelectorAll('.mdc-icon-button').forEach(el => {
+  // ── Ripples (icon buttons + buttons) ──
+  document.querySelectorAll('.mdc-icon-button, .mdc-button').forEach(el => {
     try { new mdc.ripple.MDCRipple(el); } catch(e){}
   });
 </script>
