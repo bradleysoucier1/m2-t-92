@@ -140,7 +140,7 @@
     /* ─────────────────────────────────────────
        MAIN
     ───────────────────────────────────────── */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; position: relative; }
 
     /* TOP APP BAR */
     .top-bar {
@@ -570,7 +570,12 @@ document.getElementById('btn-back').addEventListener('click', () => {
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 function persist()       { localStorage.setItem('mdcnotes-v1', JSON.stringify(notes)); }
 function esc(s)          { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function stripTags(html) { return (html||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(); }
+function stripTags(html) {
+  if (!html) return '';
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  return (el.textContent || '').replace(/\s+/g, ' ').trim();
+}
 function wc(html)        { const t = stripTags(html); return t ? t.split(/\s+/).filter(Boolean).length : 0; }
 function relDate(ts) {
   const d = Date.now() - ts;
@@ -648,7 +653,7 @@ function openNote(id) {
   if (!note) return;
   currentId = id;
 
-  document.getElementById('note-title').value         = note.title;
+  titleField.value                                    = note.title;
   document.getElementById('note-content').innerHTML   = note.content;
   document.getElementById('bar-title').textContent    = note.title || 'Untitled';
   document.getElementById('empty-state').style.display = 'none';
@@ -659,7 +664,6 @@ function openNote(id) {
   document.getElementById('pin-icon').title            = note.pinned ? 'Unpin' : 'Pin';
 
   refreshWordCount();
-  titleField.layout();
   renderList();
   if (isMobile()) showEditorPanel();
 }
@@ -670,7 +674,7 @@ function createNote() {
   persist();
   if (isMobile()) closeDrawer();
   openNote(note.id);
-  setTimeout(() => document.getElementById('note-title').focus(), 120);
+  setTimeout(() => document.getElementById('note-title').focus(), 320);
 }
 
 // ═══════════════════════════════════════════════
@@ -717,8 +721,11 @@ dialog.listen('MDCDialog:closed', evt => {
   document.getElementById('btn-delete').style.display   = 'none';
   document.getElementById('btn-pin').style.display      = 'none';
   document.getElementById('bar-title').textContent      = 'Notes';
-  renderList();
-  if (isMobile()) showListPanel();
+  if (isMobile()) {
+    showListPanel(); // showListPanel calls renderList internally
+  } else {
+    renderList();
+  }
   document.getElementById('snackbar-msg').textContent = 'Note deleted';
   snackbar.open();
 });
@@ -753,8 +760,17 @@ document.getElementById('btn-pin').addEventListener('click', () => {
 //   FORMAT BAR
 // ═══════════════════════════════════════════════
 document.querySelectorAll('.fmt-btn').forEach(btn => {
+  // mousedown: prevents focus loss on desktop
   btn.addEventListener('mousedown', e => {
     e.preventDefault();
+    document.execCommand(btn.dataset.cmd, false, null);
+    document.getElementById('note-content').focus();
+    refreshFmtState();
+    scheduleSave();
+  });
+  // touchend: needed on mobile — touchend fires before mousedown is synthesized
+  btn.addEventListener('touchend', e => {
+    e.preventDefault(); // blocks the subsequent mousedown/click
     document.execCommand(btn.dataset.cmd, false, null);
     document.getElementById('note-content').focus();
     refreshFmtState();
@@ -779,6 +795,7 @@ document.getElementById('note-title').addEventListener('input', scheduleSave);
 document.getElementById('note-content').addEventListener('input', () => { refreshWordCount(); scheduleSave(); });
 document.getElementById('note-content').addEventListener('keyup', refreshFmtState);
 document.getElementById('note-content').addEventListener('mouseup', refreshFmtState);
+document.getElementById('note-content').addEventListener('touchend', refreshFmtState);
 document.getElementById('search-input').addEventListener('input', e => { query = e.target.value; renderList(); });
 
 document.addEventListener('keydown', e => {
