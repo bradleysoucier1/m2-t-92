@@ -13,35 +13,129 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ─────────────────────────────────────────
+       THEME TOKENS — light (default)
+    ───────────────────────────────────────── */
     :root {
-      --mdc-theme-primary: #6200EE;
-      --mdc-theme-secondary: #03DAC6;
-      --primary: #6200EE;
-      --primary-dark: #3700B3;
-      --secondary: #03DAC6;
+      /* Brand */
+      --primary:        #6200EE;
+      --primary-dark:   #3700B3;
+      --secondary:      #03DAC6;
+      --secondary-on:   #000;
+
+      /* Surfaces */
+      --bg:             #f5f5f5;
+      --surface:        #ffffff;
+      --surface-raised: #ffffff;
+      --drawer-bg:      #ffffff;
+
+      /* Borders & dividers */
+      --divider:        rgba(0,0,0,0.12);
+      --divider-fmt:    rgba(0,0,0,0.10);
+
+      /* Text */
+      --on-high:        rgba(0,0,0,0.87);
+      --on-med:         rgba(0,0,0,0.54);
+      --on-low:         rgba(0,0,0,0.38);
+      --on-faint:       rgba(0,0,0,0.26);
+
+      /* Top bar */
+      --bar-bg:         #6200EE;
+      --bar-shadow:     0 2px 4px rgba(0,0,0,0.2), 0 4px 5px rgba(0,0,0,0.14);
+
+      /* Note list active */
+      --item-active-bg: rgba(98,0,238,0.08);
+      --item-active-bd: #6200EE;
+      --item-ripple:    rgba(98,0,238,1);
+
+      /* Format btn active */
+      --fmt-active-bg:  rgba(98,0,238,0.10);
+      --fmt-active-fg:  #6200EE;
+
+      /* Save indicator */
+      --save-ok-color:  #4CAF50;
+
+      /* Scrollbar */
+      --scrollbar-thumb: rgba(0,0,0,0.18);
+
+      /* Drawer modal shadow */
+      --drawer-shadow:  8px 0 24px rgba(0,0,0,0.28);
+
+      /* Content card shadow */
+      --card-shadow:    0 1px 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+
+      /* MDC overrides */
+      --mdc-theme-primary:    #6200EE;
+      --mdc-theme-secondary:  #03DAC6;
+      --mdc-theme-surface:    #ffffff;
+      --mdc-theme-background: #ffffff;
+      --mdc-theme-on-primary: #ffffff;
     }
 
+    /* ─────────────────────────────────────────
+       THEME TOKENS — dark
+    ───────────────────────────────────────── */
+    body.dark {
+      --primary:        #BB86FC;
+      --primary-dark:   #985EFF;
+      --secondary:      #03DAC6;
+      --secondary-on:   #000;
+
+      --bg:             #121212;
+      --surface:        #1E1E1E;
+      --surface-raised: #2C2C2C;
+      --drawer-bg:      #1E1E1E;
+
+      --divider:        rgba(255,255,255,0.12);
+      --divider-fmt:    rgba(255,255,255,0.10);
+
+      --on-high:        rgba(255,255,255,0.87);
+      --on-med:         rgba(255,255,255,0.60);
+      --on-low:         rgba(255,255,255,0.38);
+      --on-faint:       rgba(255,255,255,0.26);
+
+      --bar-bg:         #1F1B24;
+      --bar-shadow:     0 2px 4px rgba(0,0,0,0.4), 0 4px 5px rgba(0,0,0,0.28);
+
+      --item-active-bg: rgba(187,134,252,0.12);
+      --item-active-bd: #BB86FC;
+      --item-ripple:    rgba(187,134,252,1);
+
+      --fmt-active-bg:  rgba(187,134,252,0.16);
+      --fmt-active-fg:  #BB86FC;
+
+      --save-ok-color:  #81C784;
+
+      --scrollbar-thumb: rgba(255,255,255,0.18);
+      --drawer-shadow:   8px 0 32px rgba(0,0,0,0.6);
+      --card-shadow:     0 1px 3px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4);
+
+      --mdc-theme-primary:    #BB86FC;
+      --mdc-theme-secondary:  #03DAC6;
+      --mdc-theme-surface:    #1E1E1E;
+      --mdc-theme-background: #121212;
+      --mdc-theme-on-primary: #000000;
+    }
+
+    /* ─────────────────────────────────────────
+       BASE
+    ───────────────────────────────────────── */
     html, body { height: 100%; }
 
     body {
       font-family: 'Roboto', sans-serif;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-      background: #f5f5f5;
+      display: flex; height: 100vh; overflow: hidden;
+      background: var(--bg);
+      transition: background 0.2s, color 0.2s;
     }
 
     /* ─────────────────────────────────────────
        MODAL SCRIM
     ───────────────────────────────────────── */
     #drawer-scrim {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 19;
-      opacity: 0;
-      transition: opacity 0.25s;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 19;
+      opacity: 0; transition: opacity 0.25s;
     }
     #drawer-scrim.visible { opacity: 1; }
 
@@ -49,43 +143,31 @@
        DRAWER
     ───────────────────────────────────────── */
     .drawer {
-      width: 280px;
-      flex-shrink: 0;
-      height: 100vh;
-      background: #fff;
-      border-right: 1px solid rgba(0,0,0,0.12);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+      width: 280px; flex-shrink: 0; height: 100vh;
+      background: var(--drawer-bg);
+      border-right: 1px solid var(--divider);
+      display: flex; flex-direction: column; overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), background 0.2s, border-color 0.2s;
       z-index: 20;
     }
 
     .drawer-header {
-      background: var(--primary);
-      padding: 16px 16px 12px;
-      flex-shrink: 0;
+      background: var(--bar-bg);
+      padding: 16px 16px 12px; flex-shrink: 0;
+      transition: background 0.2s;
     }
 
     .drawer-title {
-      font-size: 20px;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: 0.15px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 20px; font-weight: 500; color: #fff;
+      letter-spacing: 0.15px; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
     }
     .drawer-title .material-icons { font-size: 22px; }
 
     .search-box {
-      display: flex;
-      align-items: center;
-      background: rgba(255,255,255,0.18);
-      border-radius: 4px;
-      padding: 6px 10px;
-      gap: 8px;
+      display: flex; align-items: center;
+      background: rgba(255,255,255,0.18); border-radius: 4px;
+      padding: 6px 10px; gap: 8px;
     }
     .search-box .material-icons { font-size: 18px; color: rgba(255,255,255,0.7); }
     .search-box input {
@@ -100,7 +182,7 @@
     .section-label {
       font-size: 10px; font-weight: 500;
       letter-spacing: 1.5px; text-transform: uppercase;
-      color: rgba(0,0,0,0.38); padding: 14px 16px 4px;
+      color: var(--on-low); padding: 14px 16px 4px;
     }
 
     .note-item {
@@ -111,46 +193,52 @@
     }
     .note-item::after {
       content: ''; position: absolute; inset: 0;
-      background: var(--primary); opacity: 0;
+      background: var(--item-ripple); opacity: 0;
       transition: opacity 0.3s; pointer-events: none;
     }
     .note-item:hover::after  { opacity: 0.04; }
     .note-item:active::after { opacity: 0.10; }
-    .note-item.active { background: rgba(98,0,238,0.08); border-left-color: var(--primary); }
+    .note-item.active {
+      background: var(--item-active-bg);
+      border-left-color: var(--item-active-bd);
+    }
 
     .note-item-title {
-      font-size: 13px; font-weight: 500; color: rgba(0,0,0,0.87);
+      font-size: 13px; font-weight: 500; color: var(--on-high);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
     }
     .note-item-preview {
-      font-size: 12px; color: rgba(0,0,0,0.54);
+      font-size: 12px; color: var(--on-med);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;
     }
     .note-item-meta {
-      font-size: 11px; color: rgba(0,0,0,0.38);
+      font-size: 11px; color: var(--on-low);
       display: flex; align-items: center; gap: 4px;
     }
     .note-item-meta .material-icons { font-size: 12px; color: var(--primary); }
 
     .empty-list {
       padding: 40px 24px; text-align: center;
-      color: rgba(0,0,0,0.38); font-size: 14px; line-height: 1.6;
+      color: var(--on-low); font-size: 14px; line-height: 1.6;
     }
 
     /* ─────────────────────────────────────────
        MAIN
     ───────────────────────────────────────── */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; position: relative; }
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; min-width: 0; position: relative;
+    }
 
     /* TOP APP BAR */
     .top-bar {
-      background: var(--primary);
+      background: var(--bar-bg);
       height: 64px;
       display: flex; align-items: center;
-      padding: 0 4px;
-      flex-shrink: 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 5px rgba(0,0,0,0.14);
+      padding: 0 4px; flex-shrink: 0;
+      box-shadow: var(--bar-shadow);
       z-index: 4; gap: 4px;
+      transition: background 0.2s, box-shadow 0.2s;
     }
     .top-bar-title {
       flex: 1; font-size: 20px; font-weight: 500; color: #fff;
@@ -183,9 +271,9 @@
       align-items: center; justify-content: center;
       gap: 16px; padding: 40px; text-align: center;
     }
-    .empty-state .material-icons { font-size: 96px; color: rgba(0,0,0,0.12); }
-    .empty-state-text { font-size: 16px; color: rgba(0,0,0,0.38); font-weight: 400; }
-    .empty-state-sub  { font-size: 14px; color: rgba(0,0,0,0.26); }
+    .empty-state .material-icons { font-size: 96px; color: var(--on-faint); opacity: 0.5; }
+    .empty-state-text { font-size: 16px; color: var(--on-low); font-weight: 400; }
+    .empty-state-sub  { font-size: 14px; color: var(--on-faint); }
 
     /* Note editor */
     .note-editor {
@@ -193,38 +281,58 @@
       padding: 24px 28px; gap: 14px;
       max-width: 820px; width: 100%; align-self: center;
     }
+
+    /* MDC TextField dark mode overrides */
     .title-field-wrap .mdc-text-field { width: 100%; }
     .title-field-wrap .mdc-text-field__input {
       font-size: 22px !important; font-weight: 400 !important;
-      height: 52px !important; color: rgba(0,0,0,0.87) !important;
+      height: 52px !important; color: var(--on-high) !important;
     }
     .title-field-wrap .mdc-floating-label { font-size: 16px !important; }
 
+    /* Dark mode MDC filled text-field background */
+    body.dark .title-field-wrap .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      background-color: rgba(255,255,255,0.06) !important;
+    }
+    body.dark .title-field-wrap .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
+      background-color: rgba(255,255,255,0.09) !important;
+    }
+    body.dark .title-field-wrap .mdc-floating-label {
+      color: var(--on-med) !important;
+    }
+    body.dark .title-field-wrap .mdc-line-ripple::before {
+      border-bottom-color: var(--on-low) !important;
+    }
+
     .meta-bar { display: flex; justify-content: space-between; align-items: center; }
-    .word-count { font-size: 12px; color: rgba(0,0,0,0.38); }
+    .word-count { font-size: 12px; color: var(--on-low); }
     .save-indicator {
-      font-size: 12px; color: rgba(0,0,0,0.38);
+      font-size: 12px; color: var(--on-low);
       display: flex; align-items: center; gap: 4px;
     }
-    .save-indicator .material-icons { font-size: 14px; color: #4CAF50; }
-    .save-indicator.saving .material-icons { color: rgba(0,0,0,0.38); animation: spin 1s linear infinite; }
+    .save-indicator .material-icons { font-size: 14px; color: var(--save-ok-color); }
+    .save-indicator.saving .material-icons {
+      color: var(--on-low); animation: spin 1s linear infinite;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Content card */
     .content-card {
-      background: #fff; border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+      background: var(--surface-raised); border-radius: 4px;
+      box-shadow: var(--card-shadow);
       flex: 1; display: flex; flex-direction: column;
       min-height: 280px; overflow: hidden;
+      transition: background 0.2s, box-shadow 0.2s;
     }
 
-    /* Format bar — scrolls horizontally on mobile */
+    /* Format bar */
     .format-bar {
       display: flex; align-items: center;
-      padding: 4px 6px; border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 4px 6px; border-bottom: 1px solid var(--divider-fmt);
       gap: 2px; overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none; flex-shrink: 0;
+      transition: border-color 0.2s;
     }
     .format-bar::-webkit-scrollbar { display: none; }
 
@@ -232,84 +340,112 @@
       width: 36px; height: 36px; min-width: 36px;
       border: none; background: none; border-radius: 4px;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
-      color: rgba(0,0,0,0.54); transition: background 0.12s, color 0.12s; flex-shrink: 0;
+      color: var(--on-med); transition: background 0.12s, color 0.12s; flex-shrink: 0;
     }
     .fmt-btn .material-icons { font-size: 19px; }
-    .fmt-btn:hover  { background: rgba(0,0,0,0.06); color: rgba(0,0,0,0.87); }
-    .fmt-btn.active { background: rgba(98,0,238,0.1); color: var(--primary); }
-    .fmt-sep { width: 1px; min-width: 1px; height: 22px; background: rgba(0,0,0,0.12); margin: 0 3px; flex-shrink: 0; }
+    .fmt-btn:hover  { background: var(--divider); color: var(--on-high); }
+    .fmt-btn.active { background: var(--fmt-active-bg); color: var(--fmt-active-fg); }
+    .fmt-sep {
+      width: 1px; min-width: 1px; height: 22px;
+      background: var(--divider); margin: 0 3px; flex-shrink: 0;
+      transition: background 0.2s;
+    }
 
     #note-content {
       flex: 1; padding: 16px 20px; outline: none;
       font-family: 'Roboto', sans-serif; font-size: 15px;
-      line-height: 1.7; color: rgba(0,0,0,0.87);
+      line-height: 1.7; color: var(--on-high);
       overflow-y: auto; min-height: 200px;
+      transition: color 0.2s;
     }
-    #note-content:empty::before { content: attr(data-ph); color: rgba(0,0,0,0.35); pointer-events: none; }
+    #note-content:empty::before {
+      content: attr(data-ph); color: var(--on-low); pointer-events: none;
+    }
     #note-content ul, #note-content ol { padding-left: 24px; }
+
+    /* Note links inside content */
+    #note-content a.note-link {
+      color: var(--primary);
+      text-decoration: underline;
+      cursor: pointer;
+    }
 
     /* FAB */
     #fab { position: fixed; bottom: 24px; right: 24px; z-index: 8; }
     #fab .mdc-fab { background-color: var(--secondary) !important; }
-    #fab .mdc-fab__icon { color: #000 !important; }
+    #fab .mdc-fab__icon { color: var(--secondary-on) !important; }
 
+    /* Snackbar */
     .mdc-snackbar { z-index: 30; }
+    body.dark .mdc-snackbar__surface {
+      background: #333;
+    }
+    body.dark .mdc-snackbar__label { color: rgba(255,255,255,0.87); }
 
+    /* Dialog dark */
+    body.dark .mdc-dialog__surface {
+      background: #2C2C2C !important;
+    }
+    body.dark .mdc-dialog__title,
+    body.dark .mdc-dialog__content {
+      color: rgba(255,255,255,0.87) !important;
+    }
+    body.dark .mdc-button .mdc-button__label {
+      color: var(--primary) !important;
+    }
+
+    /* Animations */
     .fade-in { animation: fadeIn 0.18s ease; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+    /* Mobile list bg */
+    .mobile-list-panel {
+      background: var(--drawer-bg);
+      transition: background 0.2s;
+    }
 
     /* ─────────────────────────────────────────
-       MOBILE  ≤ 599px
+       MOBILE ≤ 599px
     ───────────────────────────────────────── */
     @media (max-width: 599px) {
-      /* Drawer → fixed modal */
       .drawer {
         position: fixed; top: 0; left: 0; height: 100%;
         transform: translateX(-100%); box-shadow: none;
       }
       .drawer.open {
         transform: translateX(0);
-        box-shadow: 8px 0 24px rgba(0,0,0,0.28);
+        box-shadow: var(--drawer-shadow);
       }
       #drawer-scrim { display: block; }
       #btn-menu { display: flex; }
-
-      /* Top bar shorter */
       .top-bar { height: 56px; }
 
-      /* Editor panel slides in over list */
       .editor-wrap {
         position: absolute; inset: 0;
-        background: #f5f5f5;
+        background: var(--bg);
         transform: translateX(105%);
         transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
         z-index: 3;
       }
       .editor-wrap.panel-visible { transform: translateX(0); }
 
-      /* Back button & action btns when editor is open */
-      body.editor-open #btn-back   { display: flex; }
-      body.editor-open #btn-menu   { display: none; }
+      body.editor-open #btn-back { display: flex; }
+      body.editor-open #btn-menu { display: none; }
 
-      /* Mobile list panel fills space under top bar */
-      .mobile-list-panel {
-        flex: 1; overflow-y: auto;
-        background: #fff;
-      }
+      .mobile-list-panel { flex: 1; overflow-y: auto; }
 
-      /* Compact editor on mobile */
       .note-editor { padding: 16px; gap: 12px; }
       .title-field-wrap .mdc-text-field__input { font-size: 18px !important; height: 46px !important; }
       .content-card { min-height: 180px; }
       #note-content { min-height: 120px; }
-
       .empty-state .material-icons { font-size: 64px; }
       .note-item { padding: 12px 16px; }
       #fab { bottom: 16px; right: 16px; }
@@ -323,7 +459,7 @@
     }
 
     /* ─────────────────────────────────────────
-       DESKTOP ≥ 600px — lock panels
+       DESKTOP ≥ 600px
     ───────────────────────────────────────── */
     @media (min-width: 600px) {
       .editor-wrap  { transform: none !important; position: static; }
@@ -338,7 +474,7 @@
 
 <div id="drawer-scrim"></div>
 
-<!-- DRAWER -->
+<!-- ──────────── DRAWER ──────────── -->
 
 <aside class="drawer" id="drawer">
   <div class="drawer-header">
@@ -354,7 +490,7 @@
   <div class="notes-list-wrap" id="notes-list"></div>
 </aside>
 
-<!-- MAIN -->
+<!-- ──────────── MAIN ──────────── -->
 
 <div class="main">
 
@@ -368,15 +504,23 @@
       <span class="material-icons">arrow_back</span>
     </button>
     <span class="top-bar-title" id="bar-title">Notes</span>
+    <!-- Copy link — shown when note open -->
+    <button class="icon-btn" id="btn-link" title="Copy link to this note" style="display:none" aria-label="Copy link">
+      <span class="material-icons">link</span>
+    </button>
     <button class="icon-btn" id="btn-pin" title="Toggle pin" style="display:none" aria-label="Pin">
       <span class="material-icons" id="pin-icon">push_pin</span>
     </button>
     <button class="icon-btn" id="btn-delete" title="Delete" style="display:none" aria-label="Delete">
       <span class="material-icons">delete</span>
     </button>
+    <!-- Dark mode toggle — always visible -->
+    <button class="icon-btn" id="btn-theme" aria-label="Toggle dark mode">
+      <span class="material-icons" id="theme-icon">dark_mode</span>
+    </button>
   </div>
 
-  <!-- Mobile list panel (behind editor slide) -->
+  <!-- Mobile list panel -->
 
   <div class="mobile-list-panel" id="mobile-list-panel">
     <div id="mobile-notes-list"></div>
@@ -413,19 +557,19 @@
 
   <div class="content-card">
     <div class="format-bar">
-      <button class="fmt-btn" data-cmd="bold"               title="Bold"><span class="material-icons">format_bold</span></button>
-      <button class="fmt-btn" data-cmd="italic"             title="Italic"><span class="material-icons">format_italic</span></button>
-      <button class="fmt-btn" data-cmd="underline"          title="Underline"><span class="material-icons">format_underlined</span></button>
-      <button class="fmt-btn" data-cmd="strikeThrough"      title="Strikethrough"><span class="material-icons">strikethrough_s</span></button>
+      <button class="fmt-btn" data-cmd="bold"                title="Bold"><span class="material-icons">format_bold</span></button>
+      <button class="fmt-btn" data-cmd="italic"              title="Italic"><span class="material-icons">format_italic</span></button>
+      <button class="fmt-btn" data-cmd="underline"           title="Underline"><span class="material-icons">format_underlined</span></button>
+      <button class="fmt-btn" data-cmd="strikeThrough"       title="Strikethrough"><span class="material-icons">strikethrough_s</span></button>
       <div class="fmt-sep"></div>
       <button class="fmt-btn" data-cmd="insertUnorderedList" title="Bullet list"><span class="material-icons">format_list_bulleted</span></button>
       <button class="fmt-btn" data-cmd="insertOrderedList"   title="Numbered list"><span class="material-icons">format_list_numbered</span></button>
       <div class="fmt-sep"></div>
-      <button class="fmt-btn" data-cmd="justifyLeft"   title="Left"><span class="material-icons">format_align_left</span></button>
-      <button class="fmt-btn" data-cmd="justifyCenter" title="Center"><span class="material-icons">format_align_center</span></button>
-      <button class="fmt-btn" data-cmd="justifyRight"  title="Right"><span class="material-icons">format_align_right</span></button>
+      <button class="fmt-btn" data-cmd="justifyLeft"         title="Left"><span class="material-icons">format_align_left</span></button>
+      <button class="fmt-btn" data-cmd="justifyCenter"       title="Center"><span class="material-icons">format_align_center</span></button>
+      <button class="fmt-btn" data-cmd="justifyRight"        title="Right"><span class="material-icons">format_align_right</span></button>
       <div class="fmt-sep"></div>
-      <button class="fmt-btn" data-cmd="removeFormat" title="Clear formatting"><span class="material-icons">format_clear</span></button>
+      <button class="fmt-btn" data-cmd="removeFormat"        title="Clear formatting"><span class="material-icons">format_clear</span></button>
     </div>
     <div id="note-content" contenteditable="true" data-ph="Start writing…"></div>
   </div>
@@ -433,9 +577,9 @@
 </div>
 ```
 
-  </div><!-- /editor-wrap -->
+  </div>
 
-</div><!-- /main -->
+</div>
 
 <!-- FAB -->
 
@@ -450,9 +594,9 @@
 
 <div class="mdc-snackbar" id="snackbar">
   <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-    <div class="mdc-snackbar__label" id="snackbar-msg" aria-atomic="false">Note deleted</div>
+    <div class="mdc-snackbar__label" id="snackbar-msg" aria-atomic="false"></div>
     <div class="mdc-snackbar__actions" aria-atomic="true">
-      <button type="button" class="mdc-button mdc-snackbar__action" id="btn-undo">
+      <button type="button" class="mdc-button mdc-snackbar__action" id="btn-undo" style="display:none">
         <div class="mdc-button__ripple"></div>
         <span class="mdc-button__label">UNDO</span>
       </button>
@@ -465,9 +609,9 @@
 <div class="mdc-dialog" id="confirm-dialog">
   <div class="mdc-dialog__container">
     <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true"
-         aria-labelledby="dialog-title" aria-describedby="dialog-content">
-      <h2 class="mdc-dialog__title" id="dialog-title">Delete note?</h2>
-      <div class="mdc-dialog__content" id="dialog-content">
+         aria-labelledby="dlg-title" aria-describedby="dlg-content">
+      <h2 class="mdc-dialog__title" id="dlg-title">Delete note?</h2>
+      <div class="mdc-dialog__content" id="dlg-content">
         This note will be deleted. You can undo immediately after.
       </div>
       <div class="mdc-dialog__actions">
@@ -488,6 +632,8 @@
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 
 <script>
+'use strict';
+
 // ═══════════════════════════════════════════════
 //   BREAKPOINT
 // ═══════════════════════════════════════════════
@@ -503,13 +649,59 @@ let saveTimer = null;
 let trash     = null;
 
 // ═══════════════════════════════════════════════
-//   MDC
+//   THEME  (dark / light)
+// ═══════════════════════════════════════════════
+const THEME_KEY = 'mdcnotes-theme';
+
+function resolveInitialTheme() {
+  // URL param (?t=dark or ?t=light) takes highest precedence and also writes localStorage
+  const urlParam = new URLSearchParams(location.search).get('t');
+  if (urlParam === 'dark' || urlParam === 'light') {
+    localStorage.setItem(THEME_KEY, urlParam);
+    return urlParam;
+  }
+  // Stored preference
+  const stored = localStorage.getItem(THEME_KEY);
+  if (stored === 'dark' || stored === 'light') return stored;
+  // OS preference
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+let currentTheme = resolveInitialTheme();
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  document.body.classList.toggle('dark', theme === 'dark');
+  document.getElementById('theme-icon').textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+  document.getElementById('btn-theme').title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+function toggleTheme() {
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+
+applyTheme(currentTheme);
+
+document.getElementById('btn-theme').addEventListener('click', toggleTheme);
+
+// ═══════════════════════════════════════════════
+//   MDC INIT
 // ═══════════════════════════════════════════════
 const titleField = mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
 const snackbar   = mdc.snackbar.MDCSnackbar.attachTo(document.getElementById('snackbar'));
-snackbar.timeoutMs = 5000;
+snackbar.timeoutMs = 4000;
 const dialog = mdc.dialog.MDCDialog.attachTo(document.getElementById('confirm-dialog'));
 mdc.ripple.MDCRipple.attachTo(document.getElementById('fab-btn'));
+
+// ═══════════════════════════════════════════════
+//   SNACKBAR HELPER
+// ═══════════════════════════════════════════════
+function showSnack(msg, withUndo = false) {
+  document.getElementById('snackbar-msg').textContent = msg;
+  document.getElementById('btn-undo').style.display   = withUndo ? '' : 'none';
+  snackbar.open();
+}
 
 // ═══════════════════════════════════════════════
 //   DRAWER (MODAL on mobile)
@@ -527,11 +719,10 @@ function closeDrawer() {
   scrimEl.classList.remove('visible');
   setTimeout(() => { scrimEl.style.display = 'none'; }, 260);
 }
-
 scrimEl.addEventListener('click', closeDrawer);
 document.getElementById('btn-menu').addEventListener('click', openDrawer);
 
-// Edge-swipe right to open drawer
+// Edge-swipe to open drawer
 let touchStartX = 0;
 document.getElementById('mobile-list-panel').addEventListener('touchstart', e => {
   touchStartX = e.touches[0].clientX;
@@ -554,8 +745,10 @@ function showListPanel() {
   document.body.classList.remove('editor-open');
   currentId = null;
   document.getElementById('bar-title').textContent    = 'Notes';
+  document.getElementById('btn-link').style.display   = 'none';
   document.getElementById('btn-pin').style.display    = 'none';
   document.getElementById('btn-delete').style.display = 'none';
+  updateURL();
   renderList();
 }
 
@@ -565,18 +758,38 @@ document.getElementById('btn-back').addEventListener('click', () => {
 });
 
 // ═══════════════════════════════════════════════
+//   URL HELPERS
+// ═══════════════════════════════════════════════
+function updateURL(noteId) {
+  const params = new URLSearchParams(location.search);
+  // Preserve ?t= param if present
+  const t = params.get('t');
+  const next = new URLSearchParams();
+  if (t) next.set('t', t);
+  if (noteId) next.set('n', noteId);
+  const qs = next.toString();
+  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+}
+
+function noteURL(noteId) {
+  const params = new URLSearchParams();
+  params.set('n', noteId);
+  return location.origin + location.pathname + '?' + params.toString();
+}
+
+// ═══════════════════════════════════════════════
 //   HELPERS
 // ═══════════════════════════════════════════════
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-function persist()       { localStorage.setItem('mdcnotes-v1', JSON.stringify(notes)); }
-function esc(s)          { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function persist() { localStorage.setItem('mdcnotes-v1', JSON.stringify(notes)); }
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function stripTags(html) {
   if (!html) return '';
   const el = document.createElement('div');
   el.innerHTML = html;
   return (el.textContent || '').replace(/\s+/g, ' ').trim();
 }
-function wc(html)        { const t = stripTags(html); return t ? t.split(/\s+/).filter(Boolean).length : 0; }
+function wc(html) { const t = stripTags(html); return t ? t.split(/\s+/).filter(Boolean).length : 0; }
 function relDate(ts) {
   const d = Date.now() - ts;
   if (d < 60000)    return 'Just now';
@@ -586,7 +799,7 @@ function relDate(ts) {
 }
 
 // ═══════════════════════════════════════════════
-//   RENDER
+//   RENDER LIST
 // ═══════════════════════════════════════════════
 function noteItemHTML(n) {
   const active   = n.id === currentId ? 'active' : '';
@@ -607,16 +820,17 @@ function buildListHTML() {
   let filtered = notes.filter(n =>
     !q || n.title.toLowerCase().includes(q) || stripTags(n.content).toLowerCase().includes(q)
   );
-  filtered.sort((a,b) => {
+  filtered.sort((a, b) => {
     if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
     return b.updatedAt - a.updatedAt;
   });
-  if (!filtered.length) return `<div class="empty-list">${q ? '🔍 No matching notes' : 'No notes yet.<br>Tap <b>+</b> to get started.'}</div>`;
-
+  if (!filtered.length) {
+    return `<div class="empty-list">${q ? '🔍 No matching notes' : 'No notes yet.<br>Tap <b>+</b> to get started.'}</div>`;
+  }
   const pinned   = filtered.filter(n => n.pinned);
   const unpinned = filtered.filter(n => !n.pinned);
   let html = '';
-  if (pinned.length)                    html += `<div class="section-label">Pinned</div>` + pinned.map(noteItemHTML).join('');
+  if (pinned.length) html += `<div class="section-label">Pinned</div>` + pinned.map(noteItemHTML).join('');
   if (pinned.length && unpinned.length) html += `<div class="section-label">Others</div>`;
   html += unpinned.map(noteItemHTML).join('');
   return html;
@@ -630,16 +844,12 @@ function attachListClicks(container, onItemClick) {
 
 function renderList() {
   const html = buildListHTML();
-
-  // Drawer list (desktop + mobile drawer)
   const drawerList = document.getElementById('notes-list');
   drawerList.innerHTML = html;
   attachListClicks(drawerList, id => {
     openNote(id);
     if (isMobile()) closeDrawer();
   });
-
-  // Mobile list panel
   const mobileList = document.getElementById('mobile-notes-list');
   mobileList.innerHTML = html;
   attachListClicks(mobileList, id => openNote(id));
@@ -653,29 +863,55 @@ function openNote(id) {
   if (!note) return;
   currentId = id;
 
-  titleField.value                                    = note.title;
+  titleField.value = note.title;
   document.getElementById('note-content').innerHTML   = note.content;
   document.getElementById('bar-title').textContent    = note.title || 'Untitled';
   document.getElementById('empty-state').style.display = 'none';
   document.getElementById('note-editor').style.display = 'flex';
+  document.getElementById('btn-link').style.display    = '';
   document.getElementById('btn-delete').style.display  = '';
   document.getElementById('btn-pin').style.display     = '';
   document.getElementById('pin-icon').style.opacity    = note.pinned ? '1' : '0.5';
   document.getElementById('pin-icon').title            = note.pinned ? 'Unpin' : 'Pin';
 
+  updateURL(id);
   refreshWordCount();
   renderList();
   if (isMobile()) showEditorPanel();
 }
 
 function createNote() {
-  const note = { id: uid(), title: '', content: '', pinned: false, createdAt: Date.now(), updatedAt: Date.now() };
+  const note = {
+    id: uid(), title: '', content: '',
+    pinned: false, createdAt: Date.now(), updatedAt: Date.now()
+  };
   notes.unshift(note);
   persist();
   if (isMobile()) closeDrawer();
   openNote(note.id);
   setTimeout(() => document.getElementById('note-title').focus(), 320);
 }
+
+// ═══════════════════════════════════════════════
+//   COPY LINK
+// ═══════════════════════════════════════════════
+document.getElementById('btn-link').addEventListener('click', () => {
+  if (!currentId) return;
+  const url = noteURL(currentId);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showSnack('Link copied to clipboard'));
+  } else {
+    // Fallback for insecure contexts
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showSnack('Link copied'); }
+    catch { showSnack('Copy: ' + url); }
+    document.body.removeChild(ta);
+  }
+});
 
 // ═══════════════════════════════════════════════
 //   SAVE
@@ -718,16 +954,17 @@ dialog.listen('MDCDialog:closed', evt => {
   currentId = null;
   document.getElementById('note-editor').style.display  = 'none';
   document.getElementById('empty-state').style.display  = '';
+  document.getElementById('btn-link').style.display     = 'none';
   document.getElementById('btn-delete').style.display   = 'none';
   document.getElementById('btn-pin').style.display      = 'none';
   document.getElementById('bar-title').textContent      = 'Notes';
   if (isMobile()) {
-    showListPanel(); // showListPanel calls renderList internally
+    showListPanel();
   } else {
+    updateURL();
     renderList();
   }
-  document.getElementById('snackbar-msg').textContent = 'Note deleted';
-  snackbar.open();
+  showSnack('Note deleted', true);
 });
 
 document.getElementById('btn-undo').addEventListener('click', () => {
@@ -748,11 +985,11 @@ document.getElementById('btn-pin').addEventListener('click', () => {
   if (!currentId) return;
   const note = notes.find(n => n.id === currentId);
   if (!note) return;
-  note.pinned = !note.pinned;
+  note.pinned    = !note.pinned;
   note.updatedAt = Date.now();
   persist();
   document.getElementById('pin-icon').style.opacity = note.pinned ? '1' : '0.5';
-  document.getElementById('pin-icon').title = note.pinned ? 'Unpin' : 'Pin';
+  document.getElementById('pin-icon').title         = note.pinned ? 'Unpin' : 'Pin';
   renderList();
 });
 
@@ -760,23 +997,20 @@ document.getElementById('btn-pin').addEventListener('click', () => {
 //   FORMAT BAR
 // ═══════════════════════════════════════════════
 document.querySelectorAll('.fmt-btn').forEach(btn => {
-  // mousedown: prevents focus loss on desktop
   btn.addEventListener('mousedown', e => {
     e.preventDefault();
     document.execCommand(btn.dataset.cmd, false, null);
     document.getElementById('note-content').focus();
-    refreshFmtState();
-    scheduleSave();
+    refreshFmtState(); scheduleSave();
   });
-  // touchend: needed on mobile — touchend fires before mousedown is synthesized
   btn.addEventListener('touchend', e => {
-    e.preventDefault(); // blocks the subsequent mousedown/click
+    e.preventDefault();
     document.execCommand(btn.dataset.cmd, false, null);
     document.getElementById('note-content').focus();
-    refreshFmtState();
-    scheduleSave();
+    refreshFmtState(); scheduleSave();
   });
 });
+
 function refreshFmtState() {
   document.querySelectorAll('.fmt-btn[data-cmd]').forEach(btn => {
     try { btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd)); } catch(_) {}
@@ -786,6 +1020,22 @@ function refreshWordCount() {
   const count = wc(document.getElementById('note-content').innerHTML);
   document.getElementById('word-count').textContent = `${count} word${count !== 1 ? 's' : ''}`;
 }
+
+// ═══════════════════════════════════════════════
+//   NOTE LINK CLICKS (links inserted as /?n=id)
+// ═══════════════════════════════════════════════
+document.getElementById('note-content').addEventListener('click', e => {
+  const a = e.target.closest('a[data-note-id]');
+  if (!a) return;
+  e.preventDefault();
+  const target = notes.find(n => n.id === a.dataset.noteId);
+  if (target) {
+    saveNote();
+    openNote(target.id);
+  } else {
+    showSnack('Linked note not found');
+  }
+});
 
 // ═══════════════════════════════════════════════
 //   EVENTS
@@ -811,11 +1061,32 @@ window.addEventListener('resize', () => {
   }
 });
 
+// popstate: handle browser back/forward button
+window.addEventListener('popstate', () => {
+  const params = new URLSearchParams(location.search);
+  const noteId = params.get('n');
+  if (noteId) {
+    openNote(noteId);
+  } else {
+    if (isMobile()) showListPanel();
+  }
+});
+
 // ═══════════════════════════════════════════════
 //   BOOT
 // ═══════════════════════════════════════════════
-renderList();
-if (notes.length > 0 && !isMobile()) openNote(notes[0].id);
+(function boot() {
+  const params = new URLSearchParams(location.search);
+  const noteId = params.get('n');
+
+  renderList();
+
+  if (noteId && notes.find(n => n.id === noteId)) {
+    openNote(noteId);
+  } else if (notes.length > 0 && !isMobile()) {
+    openNote(notes[0].id);
+  }
+})();
 </script>
 
 </body>
